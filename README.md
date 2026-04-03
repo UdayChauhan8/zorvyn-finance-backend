@@ -19,9 +19,33 @@ This decoupling guarantees that the codebase is highly maintainable, testable, a
 | **Marshmallow**| Complex payload serialization, sanitization, and input validation |
 | **JWT Extended** | Stateless authentication ensuring highly secure session tokenization |
 
-## 3. Setup Instructions
+## 3. Live API Deployment
 
-To get the application running locally for evaluation, run the following commands sequentially:
+This API is currently proudly deployed and securely hosted live on the PythonAnywhere cloud infrastructure.
+
+**Live Production Base URL:**
+👉 **[https://udaychauhan8.pythonanywhere.com/](https://udaychauhan8.pythonanywhere.com/)**
+
+*You can verify the system is running by hitting the [Health Check Endpoint](https://udaychauhan8.pythonanywhere.com/health) which natively returns a `200 OK` production payload.*
+
+---
+
+## 4. End-to-End API Testing (Postman)
+
+To rigorously test the entire architecture (including Role Guards, Math Aggregations, and Error Handling constraints), a meticulously crafted Postman Collection has been published to a live Workspace.
+
+You can instantly view and execute the entire 19-step test suite (from Token Generation to 403-Validation) via this public workspace link:
+👉 **[Zorvyn Finance API Postman Tests](https://chauhanuday817-4305036.postman.co/workspace/TeamCache's-Workspace~658161fa-7250-4621-8c8c-469b1a09d791/collection/48586559-32ceca3e-c655-446f-883f-cfba7bb32007?action=share&creator=48586559&active-environment=48586559-07d03a73-b8f3-4977-84db-a87b5b222ea4)**
+
+1. Simply open the workspace link above.
+2. The folder contains fully sequenced tests verifying everything seamlessly.
+3. *Important:* Ensure the environment selected in the top right is pointing the `base_url` to the live `pythonanywhere` server.
+
+---
+
+## 5. Local Setup Instructions
+
+If you prefer to run the application dynamically on your own local machine for architectural evaluation, run the following commands sequentially:
 
 ```bash
 # 1. Create a virtual environment and activate it
@@ -32,14 +56,13 @@ source venv/bin/activate  # On Windows use: venv\Scripts\activate
 pip install -r requirements.txt
 
 # 3. Initialize the database and run the integrity Test Suite!
-# This verifies the Models, Marshmallow Schemas, and bootstraps the zorvyn.db file
 python test_state.py
 
 # 4. Boot up the local development server (Runs on Port 5000)
 python run.py
 ```
 
-## 4. Role Matrix
+## 6. Role Matrix
 
 The backend enforces strict Role-Based Access Control (RBAC) intercepting malicious payloads automatically.
 
@@ -52,7 +75,7 @@ The backend enforces strict Role-Based Access Control (RBAC) intercepting malici
 | **Edit Transactions**| ✅ | ❌ | ❌ |
 | **Delete Transactions**| ✅ | ❌ | ❌ |
 
-## 5. API Endpoints
+## 7. API Endpoints
 
 ### Auth
 - `POST /api/auth/register` - Register a new User account
@@ -70,7 +93,7 @@ The backend enforces strict Role-Based Access Control (RBAC) intercepting malici
 - `GET /api/dashboard/category-breakdown` - Sum aggregation sliced horizontally by Categories
 - `GET /api/dashboard/recent` - Rapidly fetches the last 5 active transactions globally
 
-## 6. Technical Decisions & Trade-offs
+## 8. Technical Decisions & Trade-offs
 
 During the architectural design phase, several careful decisions were made to build a production-emulated system while satisfying the exact requirements of the assignment constraints:
 

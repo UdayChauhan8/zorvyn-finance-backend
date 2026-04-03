@@ -38,8 +38,8 @@ def create_app(config_name="development"):
         return jsonify({"error": "Internal server error"}), 500
 
     # 5. Simple test route
-    @app.route('/ping', methods=['GET'])
-    def ping():
+    @app.route('/health', methods=['GET'])
+    def health():
         return {
             "status": "success",
             "message": "Zorvyn Finance Backend API is up and running!",

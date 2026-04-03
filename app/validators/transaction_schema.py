@@ -23,7 +23,14 @@ class TransactionResponseSchema(Schema):
     description = fields.String(dump_only=True)
     date = fields.DateTime(dump_only=True)
 
+class TransactionFilterSchema(Schema):
+    type = fields.String(validate=validate.OneOf(["income", "expense"]))
+    category = fields.String(validate=validate.Length(min=1, max=50))
+    start_date = fields.DateTime()
+    end_date = fields.DateTime()
+
 transaction_create_schema = TransactionCreateSchema()
 transaction_update_schema = TransactionUpdateSchema()
 transaction_response_schema = TransactionResponseSchema()
 transaction_responses_schema = TransactionResponseSchema(many=True) # Used for listing multiple records
+transaction_filter_schema = TransactionFilterSchema()

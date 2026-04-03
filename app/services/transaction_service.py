@@ -14,9 +14,20 @@ def create_transaction(user_id, data):
     db.session.commit()
     return txn
 
-def get_user_transactions(user_id):
-    # Retrieve global ledger, not just personal ones
-    return Transaction.query.filter_by(is_deleted=False).order_by(Transaction.date.desc()).all()
+def get_user_transactions(filters=None):
+    query = Transaction.query.filter_by(is_deleted=False)
+    
+    if filters:
+        if filters.get('type'):
+            query = query.filter_by(type=filters['type'])
+        if filters.get('category'):
+            query = query.filter_by(category=filters['category'])
+        if filters.get('start_date'):
+            query = query.filter(Transaction.date >= filters['start_date'])
+        if filters.get('end_date'):
+            query = query.filter(Transaction.date <= filters['end_date'])
+            
+    return query.order_by(Transaction.date.desc()).all()
 
 def update_transaction(txn_id, user_id, data):
     txn = Transaction.query.filter_by(id=txn_id, is_deleted=False).first()

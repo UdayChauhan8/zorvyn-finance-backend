@@ -22,3 +22,6 @@ def get_category_breakdown(user_id):
         breakdown[t.category] += t.amount
         
     return breakdown
+
+def get_recent_activity(user_id, limit=5):
+    return Transaction.query.filter_by(is_deleted=False).order_by(Transaction.date.desc()).limit(limit).all()

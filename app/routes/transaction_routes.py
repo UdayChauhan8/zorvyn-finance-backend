@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services import transaction_service
-from app.validators import transaction_create_schema, transaction_update_schema, transaction_response_schema, transaction_responses_schema
+from app.validators import transaction_create_schema, transaction_update_schema, transaction_response_schema, transaction_responses_schema, transaction_filter_schema
 from app.utils.errors import ValidationError
 from app.middlewares import role_required
 from app.utils.permissions import Role
@@ -25,8 +25,12 @@ def create_txn():
 @jwt_required()
 @role_required([Role.ADMIN, Role.ANALYST, Role.VIEWER])
 def get_txns():
-    user_id = int(get_jwt_identity())
-    txns = transaction_service.get_user_transactions(user_id)
+    errors = transaction_filter_schema.validate(request.args)
+    if errors:
+        raise ValidationError("Invalid filter parameters", payload=errors)
+        
+    filters = transaction_filter_schema.load(request.args)
+    txns = transaction_service.get_user_transactions(filters)
     return jsonify(transaction_responses_schema.dump(txns)), 200
 
 @transaction_bp.route('/<int:txn_id>', methods=['PUT', 'PATCH'])

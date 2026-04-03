@@ -23,4 +23,8 @@ def authenticate_user(email, password):
     # Check if user exists and password is correct securely
     if not user or not user.check_password(password):
         raise UnauthorizedError("Invalid email or password.")
+        
+    if not user.is_active:
+        raise UnauthorizedError("This account has been deactivated.")
+        
     return user

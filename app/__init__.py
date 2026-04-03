@@ -46,6 +46,10 @@ def create_app(config_name="development"):
             "environment": config_name
         }, 200
         
-    # We will register our blueprints/routes here in later phases
-        
+    # 6. Register Routes / Blueprints
+    from app.routes import auth_bp, transaction_bp, dashboard_bp
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')
+    app.register_blueprint(transaction_bp, url_prefix='/api/transactions')
+    app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
+    
     return app

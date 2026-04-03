@@ -10,7 +10,7 @@ transaction_bp = Blueprint('transaction_bp', __name__)
 
 @transaction_bp.route('/', methods=['POST'])
 @jwt_required()
-@role_required([Role.ADMIN, Role.ANALYST]) # Strict rule applied via Role Guard!
+@role_required([Role.ADMIN]) # Restrict to Admin only!
 def create_txn():
     data = request.get_json() or {}
     errors = transaction_create_schema.validate(data)
@@ -31,7 +31,7 @@ def get_txns():
 
 @transaction_bp.route('/<int:txn_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
-@role_required([Role.ADMIN, Role.ANALYST])
+@role_required([Role.ADMIN])
 def update_txn(txn_id):
     data = request.get_json() or {}
     errors = transaction_update_schema.validate(data)
@@ -44,7 +44,7 @@ def update_txn(txn_id):
 
 @transaction_bp.route('/<int:txn_id>', methods=['DELETE'])
 @jwt_required()
-@role_required([Role.ADMIN, Role.ANALYST])
+@role_required([Role.ADMIN])
 def delete_txn(txn_id):
     user_id = int(get_jwt_identity())
     # Notice the route just calls delete. If not found, the service throws the 404!

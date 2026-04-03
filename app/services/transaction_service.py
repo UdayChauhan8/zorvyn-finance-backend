@@ -15,11 +15,11 @@ def create_transaction(user_id, data):
     return txn
 
 def get_user_transactions(user_id):
-    # Notice we only return rows where is_deleted == False
-    return Transaction.query.filter_by(user_id=user_id, is_deleted=False).order_by(Transaction.date.desc()).all()
+    # Retrieve global ledger, not just personal ones
+    return Transaction.query.filter_by(is_deleted=False).order_by(Transaction.date.desc()).all()
 
 def update_transaction(txn_id, user_id, data):
-    txn = Transaction.query.filter_by(id=txn_id, user_id=user_id, is_deleted=False).first()
+    txn = Transaction.query.filter_by(id=txn_id, is_deleted=False).first()
     if not txn:
         raise NotFoundError("Transaction not found or you don't have access to it.")
         
@@ -32,7 +32,7 @@ def update_transaction(txn_id, user_id, data):
     return txn
 
 def delete_transaction(txn_id, user_id):
-    txn = Transaction.query.filter_by(id=txn_id, user_id=user_id, is_deleted=False).first()
+    txn = Transaction.query.filter_by(id=txn_id, is_deleted=False).first()
     if not txn:
         raise NotFoundError("Transaction not found.")
     
